@@ -6,12 +6,9 @@ public class GameBoardManager : MonoBehaviour
 {
 	[Header("Tile Properties")]
 	public Tile[,] tiles;
-	[SerializeField]
-	private int NumberOfRows;
-	[SerializeField]
-	private int NumberOfColumns;
-	[SerializeField]
-	private Vector2 offset;
+	public int NumberOfRows;
+	public int NumberOfColumns;
+	public Vector2 offset;
 
 
 	[Header("References to Game Objects")]
@@ -37,7 +34,7 @@ public class GameBoardManager : MonoBehaviour
 	{
 		
 	}
-	private void GenerateBoard()
+	private void GenerateBoard()//generate the board
 	{
 		Vector2 pos = Vector2.zero;
 		for (int i = 0; i < NumberOfRows; i++)
@@ -52,7 +49,7 @@ public class GameBoardManager : MonoBehaviour
 
 		CheckMatchTile();
 	}
-	public void CheckMatchTile()
+	public void CheckMatchTile()//check in the board if we have match tiles
 	{
 		for (int i = 0; i < NumberOfRows; i++)
 		{
@@ -60,6 +57,7 @@ public class GameBoardManager : MonoBehaviour
 			{
 				if(isMatched((int)tiles[i, j].type, tiles[i, j].indecies))
 				{
+					Debug.Log("Matched");
 					List<int> types = new List<int>();
 
 					createListOfTilesTypes(ref types, (int)tiles[i, j].type);
@@ -71,7 +69,7 @@ public class GameBoardManager : MonoBehaviour
 	}
 
 
-	private bool isMatched( int val, Vector2 ind)
+	private bool isMatched( int val, Vector2 ind)// if a tile has matching neighbuors, change the type of the tile
 	{
 		AllMatchedTiles.Clear();
 
@@ -81,7 +79,7 @@ public class GameBoardManager : MonoBehaviour
 		{
 			List<Vector2> matchedTile = new List<Vector2>();
 
-			for (int j = 1; j < numberOfMatches; j++)
+			for (int j = 1; j < NumberOfRows; j++)
 			{
 				Vector2 indecies = ind + neighbours[i] * j;
 				if ( GetTileValue(indecies)== val)
@@ -161,4 +159,12 @@ public class GameBoardManager : MonoBehaviour
 			types.Add(i);
 		}
 	}
+
+	public Vector2 GetPositionByIndex(Vector2 ind)
+	{
+		Vector2 pos = Vector2.zero;
+		return new Vector2(pos.x + ind.y * 64 + offset.x, pos.y + ind.x * -64 + offset.y);
+		
+	}
+
 }

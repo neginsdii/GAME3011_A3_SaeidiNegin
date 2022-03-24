@@ -322,7 +322,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 365.87, y: 0}
   m_SizeDelta: {x: 700, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &734077715
@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.41509432, g: 0.30330774, b: 0.20911354, a: 0.3764706}
+  m_Color: {r: 0.41509432, g: 0.30330774, b: 0.20911354, a: 0.007843138}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -456,6 +456,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1239807476}
   - component: {fileID: 1239807475}
+  - component: {fileID: 1239807477}
   m_Layer: 0
   m_Name: GameBoardManager
   m_TagString: Untagged
@@ -478,7 +479,7 @@ MonoBehaviour:
   NumberOfRows: 10
   NumberOfColumns: 10
   offset: {x: 32, y: -32}
-  tilePrefab: {fileID: 7467164142186443999, guid: e1483e650f6ab0748a8a815932d812be, type: 3}
+  tilePrefab: {fileID: 7467164142186443999, guid: 4bc4f02640b53b0418c5165ffff42c67, type: 3}
   panel: {fileID: 734077713}
   numberOfMatches: 3
 --- !u!4 &1239807476
@@ -495,6 +496,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1239807477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239807474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f95404603996204e8f7abf7bbd02526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameBoard: {fileID: 0}
+  SelectedTile: {fileID: 0}
+  MouseStartPosition: {x: 0, y: 0}
+  isSwapping: 0
 --- !u!1001 &1759350001
 PrefabInstance:
   m_ObjectHideFlags: 0
