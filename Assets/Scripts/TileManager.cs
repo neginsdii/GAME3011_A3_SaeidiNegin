@@ -9,7 +9,9 @@ public class TileManager : MonoBehaviour
 
     public GameBoardManager gameBoard;
     public Tile SelectedTile;
+    public Tile SwapTile;
     public Vector2 MouseStartPosition;
+    public Vector2 MouseEndPosition;
     public bool isSwapping = false;
     private void Awake()
 	{
@@ -31,12 +33,21 @@ public class TileManager : MonoBehaviour
     {
         if(SelectedTile && isSwapping)
         UpdateSelectedTile();
+        if (SelectedTile && SwapTile)
+        {
+            if (!SelectedTile.isMoving && !SwapTile.isMoving)
+            {
+                SelectedTile = null;
+                SwapTile = null;
+              
+            }
+        }
     }
 
 
     public void UpdateSelectedTile()
 	{
-        Vector2 mouseDirection =(Vector2) Input.mousePosition - MouseStartPosition;
+        Vector2 mouseDirection =MouseEndPosition - MouseStartPosition;
         Vector2 mouseDirectionNormalized = mouseDirection.normalized;
         Vector2 AbsoluteValDirection = new Vector2(Mathf.Abs(mouseDirectionNormalized.x), Mathf.Abs(mouseDirectionNormalized.y));
 
@@ -59,8 +70,20 @@ public class TileManager : MonoBehaviour
          
             if (ind.x >= 0 && ind.x < gameBoard.NumberOfRows && ind.y >= 0 && ind.y < gameBoard.NumberOfColumns)
             {
+                SwapTile = gameBoard.tiles[(int)ind.x, (int)ind.y];
+                if (SwapTile.isDisabled || SwapTile.type==TileType.Fence)
+                {
+                    SelectedTile = null;
+                    SwapTile = null;
+                    isSwapping = false;
+                    return;
+                }
                 Vector2 destination = gameBoard.GetPositionByIndex(ind);
                 SelectedTile.SetTarget(destination, ind);
+               
+                SwapTile.SetTarget(SelectedTile.rect.anchoredPosition, SelectedTile.indecies);
+                gameBoard.flippedTiles.Add(new FlippedTiles(SelectedTile, SwapTile));
+               isSwapping = false;
             }
 		}
 	}
@@ -76,5 +99,6 @@ public class TileManager : MonoBehaviour
 	{
         if (!SelectedTile || SelectedTile!=tile) return;
         isSwapping = true;
+        MouseEndPosition = Input.mousePosition;
 	}
 }

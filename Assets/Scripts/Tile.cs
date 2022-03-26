@@ -8,18 +8,22 @@ public class Tile : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     public TileType type;
     public Vector2 indecies;
     public Image tileIcon;
+    public Image tileImage;
 
     public Sprite[] sprites;
     public RectTransform rect;
 
-    public Vector2 targetPosition;
-    public Vector2 targetIndecies;
+    public Vector2 targetPosition =Vector2.one *-1;
+    public Vector2 targetIndecies = Vector2.one*-1;
+
+    public Vector2 resetIndecies = Vector2.one * -1;
 
     public bool isMoving = false;
+    public bool isDisabled = false;
 	private void Awake()
 	{
         rect = GetComponent<RectTransform>();
-
+        tileImage = GetComponent<Image>();
     }
     void Start()
     {
@@ -38,6 +42,9 @@ public class Tile : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
         tileIcon.sprite = sprites[value];
         rect.anchoredPosition = pos;
         indecies = ind;
+        tileImage.enabled = true;
+        tileIcon.enabled = true;
+        isDisabled = false;
 	}
     public void MoveTile()
 	{
@@ -47,14 +54,16 @@ public class Tile : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
             rect.anchoredPosition = targetPosition;
             isMoving = false;
             indecies = targetIndecies;
-            TileManager.Instance.isSwapping=false;
-            TileManager.Instance.SelectedTile = null;
+            TileManager.Instance.gameBoard.tiles[(int)indecies.x, (int)indecies.y] = this;
+            targetPosition = Vector2.one * -1;
+            targetIndecies = Vector2.one * -1;
         }
-	}
+    }
+
     public void ResetTarget()
 	{
-        targetPosition = Vector2.zero;
-        targetIndecies = indecies;
+        //targetPosition = Vector2.zero;
+       // targetIndecies = indecies;
 	}
     public void SetTarget(Vector2 pos, Vector2 ind)
 	{
@@ -65,16 +74,24 @@ public class Tile : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
-        
+        resetIndecies = indecies;
             TileManager.Instance.DropTile(this);
     }
 
     public void OnPointerDown(PointerEventData eventData)
 	{
-		if(!isMoving)
+		if(!isMoving && !isDisabled && type!=TileType.Fence && !GameDataManager.isGameFinished)
 		{
             TileManager.Instance.SelectTile(this);
 		}
+	}
+
+    public void DisableTile()
+	{
+        tileIcon.enabled = false;
+        tileImage.enabled = true;
+        type = TileType.None;
+        isDisabled = true;
 	}
 }
 
@@ -84,15 +101,16 @@ public enum TileType
     Chicken=0,
     Elephant,
     giraffe,
-    Koala,
+    Pig,
     Monkey,
     Penguin,
-    Pig,
+    Koala,
     Rabbit,
     Sheep,
     Squirrel,
     Tiger,
     Zebra,
+    Fence,
     None,
     Count
 }
